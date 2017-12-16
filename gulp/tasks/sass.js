@@ -1,8 +1,16 @@
 module.exports = function(){
     $.gulp.task('sass:dev', function () {
-        return $.gulp.src('src/static/sass/main.+(scss|sass)')
+        return $.gulp.src(['src/static/sass/main.+(scss|sass)', 'src/static/sass/libs/*.+(scss|sass)'])
             .pipe($.gp.sourcemaps.init())
-            .pipe($.gp.sass().on('error', $.gp.sass.logError))
+            .pipe($.gp.plumber({
+                errorHandler: $.gp.notify.onError(function(err){
+                    return {
+                        title: 'Sass',
+                        message: err.message
+                    };
+                })
+            }))
+            .pipe($.gp.sass())
             .pipe($.gp.autoprefixer({
                 browsers: ['last 10 versions']
             }))
@@ -12,10 +20,19 @@ module.exports = function(){
                 stream: true
             }));
     });
+
     $.gulp.task('sass:build', function () {
-        return $.gulp.src('src/static/sass/main.+(scss|sass)')
+        return $.gulp.src(['src/static/sass/main.+(scss|sass)', 'src/static/sass/libs/*.+(scss|sass)'])
             .pipe($.gp.sourcemaps.init())
-            .pipe($.gp.sass().on('error', $.gp.sass.logError))
+            .pipe($.gp.plumber({
+                errorHandler: $.gp.notify.onError(function(err){
+                    return {
+                        title: 'Sass',
+                        message: err.message
+                    };
+                })
+            }))
+            .pipe($.gp.sass())
             .pipe($.gp.autoprefixer({
                 browsers: ['last 10 versions']
             }))
