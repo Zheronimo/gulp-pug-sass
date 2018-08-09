@@ -35,7 +35,11 @@ module.exports = function(){
             .pipe($.gp.sass())
             .pipe($.gp.autoprefixer({
                 browsers: ['last 10 versions']
-            }))
+						}))
+						.pipe($.gp.cssunit({
+							type     :    'px-to-rem',
+							rootSize :    16
+						}))
             .pipe($.gp.csso())
             .pipe($.gp.sourcemaps.write())
             .pipe ($.gulp.dest('build/static/css/'))
